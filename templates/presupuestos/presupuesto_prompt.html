@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Laboratorio Industrial</title>
+    <head>
+        <title>Laboratorio Industrial</title>
+  		<!--<meta charset="utf-8">-->
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		                
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    </head>		
+<div class="container">
+	<h2>Selección de Presupuesto</h2>
+		<form method="get" action="/presupuestos/presupuestoprompt/">
+		<p><label for="id_q">Filtro (Cliente o Estado):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+    <table class="table table-hover">
+    <thead>
+      <tr>
+	    <th></th>
+	    <th>Numero</th>
+        <th>Cliente</th>
+        <th>Fecha de solicitud</th>
+        <th>Fecha de vencimiento</th>
+        <th>Descripcion</th>
+        <th>Tipo</th>
+        <th>Estado</th>
+		<th>Observacion</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for presupuesto in presupuesto_list %}
+	<tr>
+    	<td><a href="#" onclick="sendValues({{ presupuesto.id }});" ><img src= "{% static "images/accion_elegir.png"%}" data-toggle="tooltip" data-placement="top" title="Seleccionar" alt= "Modificar"></a></td>
+		<td>{{ presupuesto.referencia_completa }}</td>
+		<td>{{ presupuesto.cliente }}</td>
+   		<td>{{ presupuesto.fecha_solicitud }}  </td>
+		<td>{{ presupuesto.fecha_vencimiento }}</td>
+		<td>{{ presupuesto.descripcion }}</td>
+		<td>{{ presupuesto.tipo }}</td>
+		<td>{{ presupuesto.estado }}</td>
+		<td>{{ presupuesto.observacion }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/presupuestos?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/presupuestos?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+
+<script type="text/javascript">
+ function sendValues(idpresupuesto){
+ opener.window.document.getElementById('id_presupuesto').value = idpresupuesto
+ 
+ window.close();
+ }
+</script>

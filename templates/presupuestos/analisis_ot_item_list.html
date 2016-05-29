@@ -1,0 +1,46 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Análisis por OT Item</h2>
+<p>Orden de trabajo: {{ ot_item.orden_trabajo.referencia_completa }}</p>
+<p>Item: {{ ot_item.numero }} </p>
+<p>Descripción: {{ ot_item.orden_trabajo.descripcion }} </p>
+<p>Matriz: {{ ot_item.item.matriz }} </p>
+<p>Cantidad de muestras: {{ ot_item.item.cantidadMuestra }} </p>
+
+<h2>Listado Muestras y Análisis</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th>Muestra</th>
+        	<th>Estado</th>
+        	<th>Parámetro</th>
+		<th>Técnica</th>
+		<th>Unidades</th>
+		<th>Lct</th>
+		<th>Resultado</th>
+		<th>Verificación</th>
+		<th>Observación</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for muestra in ot_item.muestra_set.all|dictsort:"referencia"%}
+        {% for analisis in muestra.analisis_set.all|dictsort:"parametro.nombre_par" %}
+	    <tr>		
+		<td>{{ muestra.referencia_completa}}</td>
+		<td>{{ muestra.estado }}</td>
+		<td>{{ analisis.parametro }}</td>
+    		<td>{{ analisis.tecnica }}</td>
+		<td>{{ analisis.unidades }}</td>
+		<td>{{ analisis.lct }}</td>
+		<td>{{ analisis.valor }}</td>
+		<td>{{ analisis.verificacion }}</td>
+		<td>{{ analisis.observacion }}</td>
+	    </tr>
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>	
+{% endblock content %}

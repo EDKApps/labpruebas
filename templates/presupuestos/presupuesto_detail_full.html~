@@ -1,0 +1,143 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<h1>Presupuesto: {{ presupuesto.referencia }}</h1>
+
+<table class="table table-hover">
+  <thead>
+    <p>Cliente: {{presupuesto.cliente.empresa}}</p>
+    <p>Contacto: {{presupuesto.cliente}}</p>
+    <p>Referencia clave: {{presupuesto.referencia_clave}}</p>
+    <p>Referencia: {{presupuesto.referencia}}</p>
+    <p>Tipo: {{presupuesto.tipo}}</p>
+    <p>Fecha de solicitud: {{presupuesto.fecha_solicitud}}</p>
+    <p>Fecha de vencimiento: {{presupuesto.fecha_vencimiento}}</p>
+    <p>Fecha de envio: {{presupuesto.fecha_envio}}</p>
+    <p>Fecha de aprobacion: {{presupuesto.fecha_aprobacion}}</p>
+    <p>Descripcion: {{presupuesto.descripcion}}</p>
+    <p>Estado: {{presupuesto.estado}}</p>
+    <p>Observacion: {{presupuesto.observacion}}</p>
+	<p>Descuento (%): {{presupuesto.descuento}}</p>
+	<hr/>
+  </thead>
+  <tbody>
+	{% for item in presupuesto.item_set.all %}
+    <p><strong>Item</strong> {{item.numero}} </p>
+	<p><strong>Matriz:</strong> {{item.matriz}} </p>
+	<p><strong>Descripcion:</strong> {{item.descripcion}}</p>
+	<p><strong>Cantidad de muestras:</strong> {{item.cantidadMuestra}}</p>
+	<p><strong>Costo Unitario:</strong>{{item.costo_unitario}}</p>
+	<p><strong>Descuento:</strong> {{item.descuento}} %</p>
+	<p><strong>Total sin descuento:</strong> {{item.total_sin_descuento}}</p>	
+	<p><strong>Total con descuento:</strong> {{item.total_con_descuento}}</p>
+
+
+	<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>Perfil</td>
+			<td>Parametro</td>
+			<td>Metodologia analitica</td>
+			<td>Costo unitario, Por muestra</td>
+		</tr>
+	</thead>
+	<tbody>
+	<!-- PARAMETROS -->
+	{% for subitem_parametro in item.subitem_parametro_set.all %}
+	<tr>
+		<td>--</td>
+		<td>{{subitem_parametro.itemparametro.parametro}}</td>
+		<td>{{subitem_parametro.itemparametro.tecnica}}</td>
+		<td>{{subitem_parametro.precio}}</td>
+	</tr>
+	{% empty %}
+	<tr>
+	<td></td>
+	<td>No hay parametros registrados</td>
+	<td></td>
+	<td></td>
+	</tr>
+	{% endfor %}
+	<!-- FIN PARAMETROS -->
+	<!-- PERFIL -->
+	{% for subitem_perfil in item.subitem_perfil_set.all %}
+	  <tr>
+		<td>{{subitem_perfil.itemperfil.nombre}}</td>
+		<td></td>
+		<td></td>
+		<td>{{subitem_perfil.precio}}</td>
+	</tr>
+		<!-- PERFIL_PARAMETRO -->
+		{% for perfilPrecio_Par in subitem_perfil.itemperfil.perfilprecio_parametro_set.all %}
+		<tr>
+			<td></td>
+			<td>{{perfilPrecio_Par.parametro}}</td>
+			<td>{{perfilPrecio_Par.tecnica}}</td>
+			<td>--</td>
+			<td></td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td/>
+			<td>No hay parametros registrados</td>
+			<td/>
+			<td/>
+		</tr>
+		{% endfor %}
+		<!-- FIN PERFIL_PARAMETRO -->
+	{% empty %}
+	<tr>
+		<td>No hay perfil registrados</td>
+		<td/>
+		<td/>
+		<td/>
+	</tr>
+	{% endfor %}
+	</tbody>
+ 	</table>
+	<!-- FIN PERFILES -->
+	{% endfor %}
+  </tbody>
+  </table>
+  <br />
+<table class="table table-hover">
+  <thead>
+  <p><strong>Muestreo: </strong></p>
+  <tr>
+	  <td>Numero</td>
+	  <td>Descripcion</td>
+	  <td>Cantidad</td>
+	  <td>Unidad de medida</td>
+	  <td>Valor unitario</td>
+	  <td>Descuento</td>
+	  <td>Valor total</td>
+  </tr>
+  </thead>
+  <tbody>
+  {% for campania in presupuesto.campania_set.all %}
+  <tr>
+    <td>{{campania.numero}}</td>
+	<td>{{campania.descripcion}}</td>
+	<td>{{campania.cantidad}}</td>
+	<td>{{campania.unidad_medida}}</td>
+	<td>{{campania.valor_unitario}}</td>
+	<td>{{campania.descuento}}%</td>
+	<td>{{campania.valor_total_con_descuento}}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  <hr />
+
+  <h2>Resumen del presupuesto</h2>
+  <p><u><strong>Total General: </strong></u></p>
+  <br/>
+  <p><strong>Presupuesto numero: </strong>{{presupuesto.referencia}}</p> 
+  <p><strong>Total: </strong></p>
+  <p><strong>Descuento: </strong>{{presupuesto.descuento}}%</p> 
+  <p><strong>Total sin descuento: </strong>{{presupuesto.total_sin_descuento}}</p>
+  <p><strong>Total con descuento: </strong>{{presupuesto.total_con_descuento}}</p>
+  <hr/>
+
+<a href="{% url "presupuestos:presupuesto_listar"  %}">Presupuestos</a>
+{% endblock content %}

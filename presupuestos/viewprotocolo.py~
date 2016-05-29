@@ -1,0 +1,30 @@
+ # -- coding: utf-8 --
+from django import forms
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.db.models import Q #para OR en consultas
+from .models import Orden_trabajo
+
+class Protocolo_ot_Listar(ListView):
+    paginate_by = 10
+
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return Orden_trabajo.objects.all().order_by('-referencia')
+        else:
+            return Orden_trabajo.objects.filter( Q(referencia_clave__icontains=query) | 
+                                           Q(referencia__icontains=query) |
+                                           Q(descripcion__icontains=query) |
+                                           Q(prioridad__icontains=query)).order_by('-referencia')
+
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(Protocolo_ot_Listar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
+

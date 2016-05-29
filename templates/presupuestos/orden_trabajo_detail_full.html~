@@ -1,0 +1,86 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Orden de trabajo: {{ orden_trabajo.referencia_completa}}</h1>
+
+<p>Presupuesto: {{ orden_trabajo.presupuesto.referencia_completa}}</p>
+<p>Descripción: {{orden_trabajo.descripcion}}</p>
+<p>Prioridad: {{orden_trabajo.prioridad}}</p>
+<p>Fecha de creación: {{orden_trabajo.fecha_creacion}}</p>
+	{% for otitem in orden_trabajo.ot_item_set.all|dictsort:"numero" %}
+	<br/>
+	<p><strong>Item</strong> {{otitem.numero}} </p>
+	<p><strong>Presupuesto-Item</strong> {{otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero}} </p>
+	<p><strong>Cantidad:</strong> {{otitem.cantidad}}</p>
+	<p><strong>Estado:</strong> {{otitem.estado}}</p>
+
+	<p><strong>Matriz:</strong> {{otitem.item.matriz}} </p>
+	<p><strong>Descripcion:</strong> {{otitem.item.descripcion}}</p>
+
+	<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>Perfil</td>
+			<td>Parametro</td>
+			<td>Metodologia analitica</td>
+		</tr>
+	</thead>
+	<tbody>
+	<!-- PARAMETROS -->
+	{% for subitem_parametro in otitem.item.subitem_parametro_set.all %}
+	<tr>
+		<td>--</td>
+		<td>{{subitem_parametro.itemparametro.parametro}}</td>
+		<td>{{subitem_parametro.itemparametro.tecnica}}</td>
+	</tr>
+	{% empty %}
+	<tr>
+	<td></td>
+	<td>No hay parametros registrados</td>
+	<td></td>
+	</tr>
+	{% endfor %}
+	<!-- FIN PARAMETROS -->
+	<!-- PERFIL -->
+	{% for subitem_perfil in otitem.item.subitem_perfil_set.all %}
+	  <tr>
+		<td>{{subitem_perfil.itemperfil.nombre}}</td>
+		<td></td>
+		<td></td>
+	</tr>
+		<!-- PERFIL_PARAMETRO -->
+		{% for perfilPrecio_Par in subitem_perfil.itemperfil.perfilprecio_parametro_set.all %}
+		<tr>
+			<td></td>
+			<td>{{perfilPrecio_Par.parametro}}</td>
+			<td>{{perfilPrecio_Par.tecnica}}</td>
+			<td></td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td/>
+			<td>No hay parametros registrados</td>
+			<td/>
+		</tr>
+		{% endfor %}
+		<!-- FIN PERFIL_PARAMETRO -->
+	{% empty %}
+	<tr>
+		<td>No hay perfil registrados</td>
+		<td/>
+		<td/>
+	</tr>
+	{% endfor %}
+	</tbody>
+ 	</table>
+	<!-- FIN PERFILES -->
+	<!-- muestra datos de muestreo -->
+	{% if otitem.muestreo_propio %}
+	<p><strong>Muestreo propio. Nota Muestreo:</strong>  {{ otitem.nota_muestreo }}</p>
+	<br/>
+	{% endif %}
+	{% endfor %}
+</tbody>
+</table>
+
+<a href="{% url "presupuestos:orden_trabajo_listar"  %}">Ordenes de Trabajo</a>
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ parametroprecio}}</h1>
+
+<p>Parametro precio: {{ parametroprecio.parametro.nombre_par }}</p>
+<a href="{% url "presupuestos:parametroprecio_listar"  %}">Parametro precio</a>
+{% endblock content %}

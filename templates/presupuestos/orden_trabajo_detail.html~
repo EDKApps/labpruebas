@@ -1,0 +1,10 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Referencia OT: {{ orden_trabajo.referencia_completa}}</h1>
+
+<p>Presupuesto: {{ presupuesto.referencia_completa}}</p>
+<p>Descripción: {{orden_trabajo.descripcion}}</p>
+<p>Prioridad: {{orden_trabajo.prioridad}}</p>
+<p>Fecha de creación: {{orden_trabajo.fecha_creacion}}</p>
+<a href="{% url "presupuestos:orden_trabajo_listar"  %}">Ordenes de Trabajo</a>
+{% endblock content %}

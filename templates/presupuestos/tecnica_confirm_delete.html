@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    Está seguro de eliminar "{{ object }}" ?
+    <input type="submit" value="Submit" />
+</form>
+{% endblock content %}

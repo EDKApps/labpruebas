@@ -1,0 +1,12 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Límite de cuantificación {{ matriztecnicalct }} creado correctamente</h1>
+
+<p><label> Matriz :</label>	<span>{{ matriztecnicalct.matriz }}</span></p>
+<p><label> Parámetro :</label> <span>{{ matriztecnicalct.parametro }}</span></p>
+<p><label> Técnica :</label> <span>{{ matriztecnicalct.tecnica }}</span></p>
+<p><label> LCT :</label> <span>{{ matriztecnicalct.lct }}</span></p>
+<p><label> Unidad :</label> <span>{{ matriztecnicalct.unidad }}</span></p>
+
+<a href="{% url "presupuestos:matriztecnicalct_listar"  %}">Límites de cuantificación - LC</a>
+{% endblock content %}

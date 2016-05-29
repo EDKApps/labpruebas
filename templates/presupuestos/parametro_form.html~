@@ -1,0 +1,14 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Parametro</h1>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>
+{% endblock content %}

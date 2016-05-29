@@ -1,0 +1,19 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Presupuesto {{ presupuesto.referencia}} creado correctamente</h1>
+
+<p>Cliente: {{presupuesto.cliente.empresa}}</p>
+<p>Contacto: {{presupuesto.cliente}}</p>
+<p>Referencia clave: {{presupuesto.referencia_clave}}</p>
+<p>Referencia: {{presupuesto.referencia}}</p>
+<p>Tipo: {{presupuesto.tipo}}</p>
+<p>Fecha de solicitud: {{presupuesto.fecha_solicitud}}</p>
+<p>Fecha de vencimiento: {{presupuesto.fecha_vencimiento}}</p>
+<p>Fecha de envio: {{presupuesto.fecha_envio}}</p>
+<p>Fecha de aprobacion: {{presupuesto.fecha_aprobacion}}</p>
+<p>Descripcion: {{presupuesto.descripcion}}</p>
+<p>Estado: {{presupuesto.estado}}</p>
+<p>Observacion: {{presupuesto.observacion}}</p>
+<p>Descuento: {{presupuesto.descuento}}</p>
+<a href="{% url "presupuestos:presupuesto_listar"  %}">Presupuestos</a>
+{% endblock content %}

@@ -1,0 +1,81 @@
+ # -- coding: utf-8 --
+from django import forms
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.db.models import Q #para OR en consultas
+
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+matriztecnicalct_fields = ('matriz','parametro','tecnica','lct','unidad')
+
+from .models import MatrizTecnicaLct, Matriz, Parametro, Tecnica, Unidades
+
+
+class MatrizTecnicaLctListar(ListView):
+    model = MatrizTecnicaLct
+    paginate_by = 10
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return MatrizTecnicaLct.objects.all().order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+        else:
+            return MatrizTecnicaLct.objects.filter( Q(matriz__nombre_matriz__icontains=query) | 
+                                          Q(parametro__nombre_par__icontains=query) | 
+                                          Q(tecnica__nombre_tec__icontains=query)  ).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+                                  
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(MatrizTecnicaLctListar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
+ 
+class MatrizTecnicaLctCrear(CreateView):
+    model = MatrizTecnicaLct
+    fields = matriztecnicalct_fields
+	
+    def get_success_url(self):
+        return reverse('presupuestos:matriztecnicalct_confirma_alta', kwargs={
+            'pk': self.object.pk,
+        })
+    def get_form(self, form_class):
+        form = super(MatrizTecnicaLctCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        form.fields['unidad'] = forms.ModelChoiceField(queryset = Unidades.objects.order_by('nombre_unidad'))
+        return form
+
+class MatrizTecnicaLctDetalle(DetailView):
+    model = MatrizTecnicaLct
+    fields = matriztecnicalct_fields
+
+class MatrizTecnicaLctConfirmaAlta(DetailView):
+    template_name = 'presupuestos/matriztecnicalct_confirm_create.html'
+    model = MatrizTecnicaLct
+    fields = matriztecnicalct_fields
+    
+class MatrizTecnicaLctModificar(UpdateView):
+    model = MatrizTecnicaLct
+    fields = matriztecnicalct_fields
+	
+    def get_success_url(self):
+        return reverse('presupuestos:matriztecnicalct_detalle', kwargs={
+            'pk': self.object.pk,
+        })
+    def get_form(self, form_class):
+        form = super(MatrizTecnicaLctModificar, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        form.fields['unidad'] = forms.ModelChoiceField(queryset = Unidades.objects.order_by('nombre_unidad'))
+        return form
+
+class MatrizTecnicaLctBorrar(DeleteView):
+    model = MatrizTecnicaLct
+    success_url = reverse_lazy('presupuestos:matriztecnicalct_listar')
+    fields = matriztecnicalct_fields

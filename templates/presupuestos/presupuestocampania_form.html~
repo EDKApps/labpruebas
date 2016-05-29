@@ -1,0 +1,109 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Muestreos del presupuesto</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		        
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>	
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ campania_form.prefix }}").formset({
+                prefix: "{{ campania_form.prefix }}",
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Muestreos del presupuesto</h1>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Muestreos</legend>
+                {{ campania_form.management_form }}
+                {{ campania_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Unidad de medida</th>
+                    <th>Valor Unit.</th>
+                    <th>Descuento (%)</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>	     
+                {% for form in campania_form %}
+
+                    <!--<div class="inline {{ campania_form.prefix }}">-->
+                        <tr class="inline {{ campania_form.prefix }}">
+                           
+                        <td>
+                            {{ form.id }}
+						{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        {{ form.numero.errors }}
+                        {{ form.numero }}
+                        </td>
+                        <td>    
+                        {{ form.descripcion.errors }}
+                        {{ form.descripcion }}
+                        </td>
+                        <td>
+                        {{ form.cantidad.errors }}
+                        {{ form.cantidad }}
+                        </td>
+                        <td>
+                        {{ form.unidad_medida.errors }}
+                        {{ form.unidad_medida }} 
+                        </td>
+                         <td>
+                        {{ form.valor_unitario.errors }}
+                        {{ form.valor_unitario }} 
+                        </td>
+                        <td>
+                        {{ form.descuento.errors }}
+                        {{ form.descuento }} 
+                        </td>
+                        <td>
+                        {{ form.valor_total.errors }}
+                        {{ form.valor_total }} 
+                        </td>
+                       <tr>
+                    <!--</div>-->
+                {% endfor %}
+                </tbody>
+                </table>
+            </fieldset>
+            <input type="submit" value="Confirmar" class="submit" />
+        </form>
+    </div>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>    
+</body>
+</html>
+{% endblock content %}

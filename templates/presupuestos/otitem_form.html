@@ -1,0 +1,135 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Items de Órden de trabajo</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		        
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>	
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ item_form.prefix }}").formset({
+                prefix: "{{ item_form.prefix }}",
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Items de Órden de trabajo</h1>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Items</legend>
+                {{ item_form.management_form }}
+                {{ item_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Descripción</th>
+                    <th>Muestreo propio</th>  
+                    <th>Nota de muestreo</th> 
+                    <th>Matriz</th>
+		    <th>Presupuesto - Item</th>
+                    <th>Muestras del presupuesto</th>
+                    <th>Muestras de OT</th>
+                    <th>Estado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>	     
+                    
+                {% for form in item_form %}
+                    
+                    <!--<div class="inline {{ item_form.prefix }}">-->
+                        <tr class="inline {{ item_form.prefix }}">
+                            
+                        <td>
+                            {{ form.id }}
+						{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        {{ form.numero.errors }}
+                        {{ form.numero }}
+                        </td>
+                        <td>   
+                        {{ form.instance.item.descripcion }}
+                        </td>
+                        <td>    
+                        {{ form.muestreo_propio.errors }}
+                        {{ form.muestreo_propio }} 
+                        </td>                            
+                        <td>    
+                        {{ form.nota_muestreo.errors }}
+                        {{ form.nota_muestreo }} 
+                        </td>                            
+                        <td>
+                        {{ form.instance.item.matriz }}
+                        </td>
+                        <td>
+                        {{ form.instance.item.presupuesto.referencia_completa }} - {{ form.instance.item.numero }}
+                       	</td>
+                        <td>
+                        {{ form.instance.item.cantidadMuestra }} 
+                        </td>
+                        <td>
+                        {{ form.cantidad.errors }}
+                        {{ form.cantidad }} 
+                        </td>
+                        <td>
+                        {{ form.estado.error }}
+                        {{ form.estado }} 
+                        </td>
+                        <td>
+						<div class="ocultar">
+			{{ form.item.erros }}
+			{{ form.item }}
+						</div>
+                        </td>
+                        <tr>
+                    <!--</div>-->
+                {% endfor %}
+                </tbody>
+                </table>
+            	<h4><a href="{% url "presupuestos:promptitems" orden_trabajo.id %}">Agregar Items del presupuesto</a></h4>
+    
+            </fieldset>
+            <input type="submit" value="Confirmar" class="submit" />
+        </form>
+    </div>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>
+
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".ocultar" ).hide();        
+    }, 500)
+</script> 
+</body>
+</html>
+{% endblock content %}

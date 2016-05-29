@@ -1,0 +1,15 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Cliente {{ cliente.contacto }},{{cliente.empresa}} creado correctamente</h1>
+
+<p>Empresa: {{ cliente.empresa }}</p>
+<p>Nombre:{{cliente.contacto_nombre}}</p>
+<p>Apellido:{{cliente.contacto_apellido}}</p>
+<p>Domicilio:{{cliente.domicilio}}</p>
+<p>Telefono Fijo:{{cliente.telefono_fijo}}</p>
+<p>Telefono Movil:{{cliente.telefono_movil}}</p>
+<p>Email:{{cliente.email}}</p>
+<p>Cuit:{{cliente.cuit}}</p>
+<p>Nota:{{cliente.nota}}</p>
+<a href="{% url "presupuestos:cliente_listar"  %}">Clientes</a>
+{% endblock content %}

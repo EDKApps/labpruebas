@@ -1,0 +1,39 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<h2>Ingreso de Análisis por Muestra</h2>
+
+<p>Orden de trabajo: {{ ot_item.orden_trabajo.referencia_completa }}</p>
+<p>Item: {{ ot_item.numero }} </p>
+<p>Descripción: {{ ot_item.orden_trabajo.descripcion }} </p>
+<p>Matriz: {{ ot_item.item.matriz }} </p>
+<p>Cantidad de muestras: {{ ot_item.item.cantidadMuestra }} </p>
+
+<h2>Muestras</h2>
+<table class="table table-hover">
+<thead>
+  <tr>
+    <th></th>
+	<th>Referencia</th>
+	<th>fecha muestreo</th>
+	<th>rotulo</th>
+	<th>estado</th>
+	<th>muestreador</th>
+  </tr>
+</thead>
+<tbody>
+  {% for muestra in ot_item.muestra_set.all %}
+  <tr>
+    <td><a href="{% url "presupuestos:muestra_analisis_modificar" muestra.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Análisis" alt= "Análisis"></a></td>		   
+    <td>{{muestra.referencia_completa}}</td>
+    <td>{{muestra.fecha_muestreo}}</td>
+    <td>{{muestra.rotulo}}</td>
+    <td>{{muestra.estado}}</td>
+    <td>{{muestra.muestreador}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% endblock content %}
+
+

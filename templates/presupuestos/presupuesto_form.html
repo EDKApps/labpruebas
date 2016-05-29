@@ -1,0 +1,69 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Presupuesto</h1>
+<form method="post">{% csrf_token %}  
+  
+    {{ form.non_field_errors }}
+    <p>
+    {{ form.cliente.errors }}
+    <label for="{{ form.cliente.id_for_label }}">Cliente:</label> {{ form.cliente }} <a href="#" onclick="showModal();" >Buscar cliente</a>
+    </p>  
+    
+    <p>
+    {{ form.referencia_clave.errors }}
+    <label for="{{ form.cliente.id_for_label }}">Referencia clave:</label> {{ form.referencia_clave }}
+    </p>     
+    
+    <p>
+    {{ form.referencia.errors }}
+    <label for="{{ form.cliente.id_for_label }}">Referencia:</label> {{ form.referencia }}
+    </p> 
+    
+    <p>
+    {{ form.tipo.errors }}
+    <label for="{{ form.tipo.id_for_label }}">Tipo:</label> {{ form.tipo }}
+    </p> 
+    
+    <p>
+    {{ form.fecha_solicitud.errors }}
+    <label for="{{ form.fecha_solicitud.id_for_label }}">Fecha de solicitud:</label> {{ form.fecha_solicitud }}
+    </p> 
+    
+    <p>
+    {{ form.fecha_vencimiento.errors }}
+    <label for="{{ form.cliente.id_for_label }}">Fecha de vencimiento:</label> {{ form.fecha_vencimiento }}
+    </p>    
+    
+    <p>
+    {{ form.fecha_envio.errors }}
+    <label for="{{ form.fecha_envio.id_for_label }}">Fecha de envío:</label> {{ form.fecha_envio }}
+    </p>     
+    
+    <p>
+    {{ form.fecha_aprobacion.errors }}
+    <label for="{{ form.fecha_aprobacion.id_for_label }}">Fecha de aprobación:</label> {{ form.fecha_aprobacion }}
+    </p>     
+    
+    <p>
+    {{ form.descripcion.errors }}
+    <label for="{{ form.descripcion.id_for_label }}">Descripción:</label> {{ form.descripcion }}
+    </p>  
+
+    <p>
+    {{ form.estado.errors }}
+    <label for="{{ form.estado.id_for_label }}">Estado:</label> {{ form.estado }}
+    </p> 
+    
+    <p>
+    {{ form.observacion.errors }}
+    <label for="{{ form.observacion.id_for_label }}">Observación:</label> {{ form.observacion }}
+    </p> 
+    
+    <p>
+    {{ form.descuento.errors }}
+    <label for="{{ form.descuento.id_for_label }}">Descuento global:</label> {{ form.descuento }}
+    </p> 
+    
+    <input type="submit" value="Submit" />
+</form>
+{% endblock content %}

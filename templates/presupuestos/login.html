@@ -1,0 +1,42 @@
+<!DOCTYPE hmtl>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Logín a seguimiento de presupuestos de Clarity</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">     	  
+  </head>
+  <body>
+    <div class="container">	
+      <form id="login_form" method="post" action="/presupuestos/login/" class="form-signin">
+				<div class="row">
+			<!--logo -->
+			<div class="text-center">
+			<img src= "{% static "images/logo_clarity.jpg"%}" alt="Logotipo de Clarity">
+			</div>
+		</div>	
+        <h3 class="form-signin-heading">Por favor ingrese sus credenciales</h3>
+		{% if mensaje  %}
+		  <div class="alert alert-danger" role="alert">
+		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			  <span class="sr-only">¡Atención!</span>{{mensaje}}
+		  </div>
+        {% endif %}
+        <label for="username" class="sr-only">Usuario</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+        <label for="password" class="sr-only">Clave</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Clave" required>
+        <div class="checkbox">
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+      </form>
+    </div> <!-- /container -->
+  </body>	
+<html>
+		
+	
+	

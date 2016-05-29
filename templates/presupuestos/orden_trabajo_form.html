@@ -1,0 +1,44 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Orden de trabajo</h1>
+<form method="post">{% csrf_token %}
+	{{ form.non_field_errors }}
+    <p>
+    {{ form.presupuesto.errors }}
+    <label for="{{ form.presupuesto.id_for_label }}">Presupuesto:</label> {{ form.presupuesto }} <a href="#" onclick="showModal();" >Buscar presupuesto</a>
+    </p>
+    <p>
+    {{ form.referencia_clave.errors }}
+    <label for="{{ form.orden_trabajo.id_for_label }}">Referencia clave:</label> {{ form.referencia_clave }}
+    </p>     
+    
+    <p>
+    {{ form.descripcion.errors }}
+    <label for="{{ form.orden_trabajo.id_for_label }}">Descripcion:</label> {{ form.descripcion }}
+    </p> 
+    
+    <p>
+    {{ form.prioridad.errors }}
+    <label for="{{ form.orden_trabajo.id_for_label }}">Prioridad:</label> {{ form.prioridad }}
+    </p> 
+    
+    <p>
+    {{ form.fecha_creacion.errors }}
+    <label for="{{ form.orden_trabajo.id_for_label }}">Fecha de creacion:</label> {{ form.fecha_creacion }}
+    </p> 
+    
+    <input type="submit" value="Confirmar" />
+</form>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>
+<script type="text/javascript">
+function showModal()
+ {
+ var dialogWin = window.open('{% url "presupuestos:presupuesto_prompt"  %}', "dialogwidth: 450px; dialogheight: 300px; resizable: yes"); // Showing the Modal Dialog
+ }
+</script>
+{% endblock content %}

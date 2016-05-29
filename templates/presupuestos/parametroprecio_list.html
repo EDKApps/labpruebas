@@ -1,0 +1,60 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Parametro precio</h2>
+		<form method="get" action="/presupuestos/parametroprecio/">
+		<p><label for="id_q">Filtro:</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th></th>
+		<th></th>		  
+        <th>Matriz</th>
+		<th>Parametro</th>
+		<th>Tecnica</th>
+		<th>Precio</th>
+		<th>Fecha de precio</th>
+		<th>Fuente de precio</th>
+		<th>Unidades</th>
+		<th>LCT</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for parametroprecio in parametroprecio_list %}
+	<tr>
+    	<td><a href="{% url "presupuestos:parametroprecio_modificar" parametroprecio.id %}" ><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Modificar" alt= "Modificar"></a></td>
+    	<td><a href="{% url "presupuestos:parametroprecio_borrar" parametroprecio.id %}"><img src= "{% static "images/accion_borrar.png"%}" data-toggle="tooltip" data-placement="top" title="Borrar" alt= "Borrar"></a></td>
+		<td>{{ parametroprecio.matriz }}</td>
+		<td>{{ parametroprecio.parametro }}</td>
+		<td>{{ parametroprecio.tecnica }}</td>
+		<td>{{ parametroprecio.precio_parametro }}</td>
+		<td>{{ parametroprecio.fecha_precio }}</td>
+		<td>{{ parametroprecio.fuente_precio }}</td>
+		<td>{{ parametroprecio.unidades }}</td>
+		<td>{{ parametroprecio.lct }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/parametroprecio?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/parametroprecio?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+<a href="{% url "presupuestos:parametroprecio_crear"  %}"><img src= "{% static "images/accion_alta.png"%}" data-toggle="tooltip" data-placement="top" title="Agregar" alt="Agregar"></a>
+{% endblock content %}

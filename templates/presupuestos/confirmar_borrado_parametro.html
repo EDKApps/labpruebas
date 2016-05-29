@@ -1,0 +1,5 @@
+{% extends "menu.html" %}
+{% block content %}
+<h2>{{ respuesta }}</h2> <br/>
+<a href="{% url "presupuestos:parametro_listar"  %}">Volver a la lista de parametros</a>
+{% endblock content %}

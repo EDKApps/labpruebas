@@ -1,0 +1,6 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Grupo {{ familia }} creado correctamente</h1>
+<p>Nombre: {{ familia.nombre }}</p>
+<a href="{% url "presupuestos:familia_listar"  %}">Grupos</a>
+{% endblock content %}

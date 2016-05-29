@@ -1,0 +1,49 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Perfil Precio</h2>
+		<form method="get" action="/presupuestos/perfilprecio_listar_visualizar/">
+		<p><label for="id_q">Filtro:</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th>Nombre</th>
+        <th>Matriz</th>
+		<th>Precio</th>
+		<th>Fecha de precio</th>	  
+		<th>Fuente de precio</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for perfilprecio in perfilprecio_list %}
+	<tr>
+		<td>{{ perfilprecio.nombre }}</td>
+		<td>{{ perfilprecio.matriz }}</td>
+		<td>{{ perfilprecio.precio }}</td>
+		<td>{{ perfilprecio.fecha_precio }}</td>
+		<td>{{ perfilprecio.fuente_precio }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/perfilprecio_listar_visualizar?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/perfilprecio_listar_visualizar?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+{% endblock content %}

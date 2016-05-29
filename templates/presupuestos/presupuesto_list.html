@@ -1,0 +1,77 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<!--<h2><div class="font-effect-outline">Presupuestos</div></h2>-->
+	<h2>Presupuestos</h2>
+		<form method="get" action="/presupuestos/presupuestos/">
+		<p><label for="id_q">Filtro (referencia clave, referencia, cliente o estado):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>		
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th></th>
+		<th></th>
+		<th></th>  
+		<th></th>  
+		<th></th>  
+		<th></th> 
+		<th>Referencia clave</th>
+		<th>Cliente</th>
+        	<th>Contacto</th>
+		  <th>Descripción</th>
+        	<th>Estado</th>
+		<th>Solicitud</th>
+		<th>Vencimiento</th>
+		<th>Envio</th>
+		<th>Aprobación</th>
+		<th colspan="2">Impresión</th> 
+      </tr>
+    </thead>
+    <tbody>	  
+    {% for presupuesto in presupuesto_list%}
+      <tr>
+		<td><a href="{% url "presupuestos:presupuesto_modificar" presupuesto.id %}"><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Modificar" alt="Modificar"></a></td>		  
+		<td><a href="{% url "presupuestos:presupuesto_borrar" presupuesto.id %}"><img src= "{% static "images/accion_borrar.png"%}" data-toggle="tooltip" data-placement="top" title="Borrar" alt= "Borrar"></a></td>
+		  
+		<td><a href="{% url "presupuestos:presupuestoitem_modificar" presupuesto.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Items" alt= "Items"></a></td>		   
+		<td><a href="{% url "presupuestos:presupuestoitem_detalle" presupuesto.id %}"><img src= "{% static "images/accion_subitem.png"%}" data-toggle="tooltip" data-placement="top" title="Subitems" alt= "Subitems"></a></td>		   
+		<td><a href="{% url "presupuestos:presupuestocampania_modificar" presupuesto.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestreo" alt= "Muestreo"></a></td>
+		<td><a href="{% url "presupuestos:presupuesto_detalle_full" presupuesto.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> 
+		<td>{{presupuesto.referencia_clave}} {{presupuesto.referencia}}</td>
+		<td>{{presupuesto.cliente.empresa}}</td>		  
+        <td>{{presupuesto.cliente.contacto}}</td>
+		<td>{{presupuesto.descripcion}}</td>
+		<td>{{presupuesto.estado}}</td>
+		<td>{{presupuesto.fecha_solicitud}}</td>
+		<td>{{presupuesto.fecha_vencimiento}}</td>
+		<td>{{presupuesto.fecha_envio}}</td>
+		<td>{{presupuesto.fecha_aprobacion}}</td>	  
+		<td><a href="{% url "presupuestos:presupuesto_modificar_impresion" presupuesto.id %}"><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Impresión Modificar" alt="Impresión Modificar"></a></td>
+		<td><a href="{% url "presupuestos:presupuesto_impresion_odt_full" presupuesto.id %}"><img src= "{% static "images/accion_imprimir.png"%}" data-toggle="tooltip" data-placement="top" title="Impresión" alt="Impresión"></a></td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/presupuestos?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/presupuestos?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}		
+</div>	
+
+<a href="{% url "presupuestos:presupuesto_crear"  %}"><img src= "{% static "images/accion_alta.png"%}" data-toggle="tooltip" data-placement="top" title="Agregar" alt="Agregar"></a>
+{% endblock content %}

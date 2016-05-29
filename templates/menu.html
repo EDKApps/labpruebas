@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Laboratorio Industrial</title>
+  		<!--<meta charset="utf-8">-->
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>
+
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>
+
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    </head>
+    <body>
+	<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+	<div class="row">
+        <div class="col-xs-3 col-md-3">
+  	      <!--logo -->
+	      <a href="{% url "presupuestos:lab_inicio"  %}"><img src= "{% static "images/logo_clarity.jpg"%}" alt="Logotipo de Clarity"></a>
+        </div>
+        <div class="col-xs-8 col-md-8"></div>
+        <div class="col-lg-1">
+            <p class="text-left"><strong>{{ user.username }}</strong></p>
+            <p><a href="{% url "presupuestos:logout"  %}" class="btn btn-link">Salir</a></p>
+        </div>
+	</div>
+	<!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+<div class="row">
+  <div class="col-xs-2 col-md-2">
+  <ul class="nav nav-pills nav-stacked">
+	<li class="active"><a href="{% url "presupuestos:lab_inicio"  %}">Inicio</a></li>
+
+  {% if perms.presupuestos.ver_cliente %}
+	<li><a href="{% url "presupuestos:cliente_listar"  %}">Clientes</a></li>
+  {% endif %}
+
+
+	<li><a href="{% url "presupuestos:presupuesto_listar"  %}">Presupuestos</a></li>
+	<li><a href="{% url "presupuestos:item_listar"  %}">Presupuesto Items</a></li>
+	<li><a href="{% url "presupuestos:orden_trabajo_listar"  %}">Órdenes de trabajo</a></li>
+	<li><a href="{% url "presupuestos:otitem_listar"  %}">OT Items</a></li>
+	<li><a href="{% url "presupuestos:muestra_ot_item_listar"  %}">Ingreso de Muestras</a></li>
+	<li><a href="{% url "presupuestos:muestra_listar"  %}">Muestras Listado</a></li>
+    <li><a href="{% url "presupuestos:ot_item_analisis_seleccion"  %}">Análisis</a></li>
+	<li><a href="{% url "presupuestos:protocolo_ot_listar" %}">Protocolo</a></li>
+
+	<li class="dropdown">
+	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listados<span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+		<li><a href="{% url "presupuestos:parametro_listar_visualizar"  %}">Parametros</a></li>
+		<li><a href="{% url "presupuestos:tecnica_listar_visualizar"%}">Metodologías analítica</a></li>
+		<li><a href="{% url "presupuestos:parametroprecio_listar_visualizar"%}">Parametros Precio</a></li>
+		<li><a href="{% url "presupuestos:perfilprecio_listar_visualizar"%}">Perfil Precio</a></li>
+	  </ul>
+	</li>
+
+	<li class="dropdown">
+	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Configuración <span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+		<li><a href="{% url "presupuestos:matriz_listar"  %}">Matriz</a></li>
+		<li><a href="{% url "presupuestos:familia_listar"  %}">Grupo</a></li>
+		<li><a href="{% url "presupuestos:parametro_listar"  %}">Parametro</a></li>
+		<li><a href="{% url "presupuestos:tecnica_listar"  %}">Metodología analítica</a></li>
+		<li><a href="{% url "presupuestos:unidades_listar"  %}">Unidades</a></li>
+		<li><a href="{% url "presupuestos:matriztecnicalct_listar"  %}">Límite de cuantificacion - LC</a></li>
+        <li><a href="{% url "presupuestos:parametroprecio_listar"  %}">Lista de precio parámetro</a></li>
+		<li><a href="{% url "presupuestos:perfilprecio_listar"  %}">Lista de precio perfiles</a></li>
+	  </ul>
+	</li>
+  </ul>
+  </div>
+  <div class="col-xs-10 col-md-10">
+    {% block content %}{% endblock content %}
+  </div>
+</div>
+
+	<script>
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	</script>
+    </body>
+</html>

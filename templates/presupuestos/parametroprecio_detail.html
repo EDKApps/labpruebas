@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Precio para {{ parametroprecio.parametro.nombre_par}} creado correctamente</h1>
+
+<p>Parametro precio: {{ parametroprecio.parametro.nombre_par }}</p>
+<a href="{% url "presupuestos:parametroprecio_listar"  %}">Parametro precio</a>
+{% endblock content %}

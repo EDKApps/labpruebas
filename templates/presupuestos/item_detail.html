@@ -1,0 +1,10 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Item {{ item.numero }} creado correctamente</h1>
+
+<p>Numero de item: {{ item.numero}}</p>
+<p>Descripcion: {{ item.descripcion}}</p>
+<p>Matriz: {{ item.nombre_matriz}}</p>
+<p>Cantidad de muestras: {{ item.cantidadMuestra}}</p>
+<a href="{% url "presupuestos:item_listar"  %}">Items</a>
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Unidad {{ Unidades}} creada correctamente</h1>
+
+<p>Unidades: {{ unidades.nombre_unidad }}</p>
+<a href="{% url "presupuestos:unidades_listar"  %}">Unidades</a>
+{% endblock content %}

@@ -1,0 +1,40 @@
+ # -- coding: utf-8 --
+from django import forms
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.forms.extras.widgets import SelectDateWidget
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.db.models import Q #para OR en consultas
+
+from .models import Presupuesto
+
+presupuesto_impresion_fields = ('impresion_introduccion', 'impresion_nota_muestreo', 'impresion_condiciones_comerciales', 'impresion_condiciones_tecnicas')
+
+
+
+"""
+class Presupuesto_ImpresionModificar(UpdateView):
+    model = Presupuesto_Impresion
+    fields = presupuesto_impresion_fields
+	
+    #def get_success_url(self):
+    #    return reverse_lazy('presupuestos:presupuesto_listar')
+
+    def get_success_url(self):
+        return reverse('presupuestos:presupuesto_listar', kwargs={
+            'pk': self.object.pk,
+        })     
+"""
+class Presupuesto_ImpresionModificar(UpdateView):
+    model = Presupuesto
+    fields = presupuesto_impresion_fields
+    #fields = presupuesto_fields
+    #form_class = PresupuestoFormModificar
+
+    def get_success_url(self):
+        return reverse_lazy('presupuestos:presupuesto_listar')
+
+"""    def get_success_url(self):
+        return reverse('presupuestos:presupuesto_detalle', kwargs={
+            'pk': self.object.pk,
+        }) """
+

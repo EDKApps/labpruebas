@@ -1,0 +1,117 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Análisis</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		        
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>	
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ analisis_form.prefix }}").formset({
+                prefix: "{{ analisis_form.prefix }}",
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <h2>Análisis por Muestra</h2>
+        <form action="." method="post">
+
+            <div>
+                <p><strong>Orden de trabajo:</strong> {{ muestra.ot_item.orden_trabajo.referencia_completa }}</p>
+                <p><strong>Item:</strong> {{ muestra.ot_item.numero }}</p>
+                <p><strong>Descripcion:</strong> {{ muestra.ot_item.orden_trabajo.descripcion }}</p>
+                <p><strong>Matriz: </strong>{{ muestra.ot_item.item.matriz }}</p>
+            </div>
+            {% csrf_token %}
+            <div>
+                <h3>Muestra</h3>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Análisis</legend>
+                {{ analisis_form.management_form }}
+                {{ analisis_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>      
+                  <th>Parámetro</th>
+                  <th>Técnica</th>
+                  <th>Unidades</th>
+                  <th>Lct</th>
+                  <th>Resultado</th>
+                  <th>Verificación</th>
+                  <th>Observación</th>
+                  </tr>
+                </thead>
+                <tbody>                
+                {% for un_analisis in analisis_form %}
+                        <tr class="inline {{ analisis_form.prefix }}">
+                        <td>
+                        {{ un_analisis.id }}
+                        {{ un_analisis.instance.parametro }}
+                        </td>
+                        <td>
+                        {{ un_analisis.instance.tecnica }}
+                        </td>
+                        <td>
+                        {{ un_analisis.instance.unidades }}
+                        </td>
+                        <td>
+                        {{ un_analisis.instance.lct }}
+                        </td>
+                        <td>
+                        {{ un_analisis.valor.errors }}
+                        {{ un_analisis.valor }} 
+                        </td>
+                        <td>
+                        {{ un_analisis.verificacion.errors }}
+                        {{ un_analisis.verificacion }}
+                        </td>
+                        <td>
+                        {{ un_analisis.observacion.errors }}
+                        {{ un_analisis.observacion }}
+                        </td>
+                        </tr> 
+                {% endfor %}
+                </tbody>
+                </table> 
+            </fieldset>
+            <input type="submit" value="Confirmar" class="submit" />
+        </form>
+    </div>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>    
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".delete-row" ).hide();        
+    }, 500)
+</script>  
+</body>
+</html>
+{% endblock content %}

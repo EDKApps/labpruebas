@@ -1,0 +1,53 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Protocolo</h2>
+		<form method="get" action="/presupuestos/protocolo/">
+		<p><label for="id_q">Filtro (referencia, descripción o prioridad):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>		
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th></th> 
+		<th>Referencia OT</th>
+		<th>Presupuesto</th>
+		<th>Descripción</th>
+		<th>Cliente</th>
+        	<th>Prioridad</th>
+        	<th>Creación</th>
+      </tr>
+    </thead>
+    <tbody>	  
+    {% for orden_trabajo in orden_trabajo_list %}
+      <tr>
+		<td><a href="{% url "presupuestos:protocolo_impresion" orden_trabajo.id %}"><img src= "{% static "images/accion_imprimir.png"%}" data-toggle="tooltip" data-placement="top" title="Impresión" alt= "Impresión"></a></td> 		  
+		<td>{{orden_trabajo.descripcion}}</td>
+		<td>{{orden_trabajo.presupuesto.cliente}}</td>
+        	<td>{{orden_trabajo.prioridad}}</td>
+		<td>{{orden_trabajo.fecha_creacion}}</td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/protocolo?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/protocolo?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}		
+</div>	
+
+{% endblock content %}

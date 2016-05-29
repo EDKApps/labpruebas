@@ -1,0 +1,58 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Ingreso de Análisis por OT Item</h2>
+		<form method="get" action="/presupuestos/analisis/">
+		<p><label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th></th>
+		<th></th>
+		<th>OT</th>
+        	<th>Item</th>
+        	<th>Presupuesto</th>
+		<th>Descripcion</th>
+		<th>Matriz</th>
+		<th>Cantidad</th>
+		<th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for otitem in ot_item_list %}
+	<tr>		
+		<td><a href="{% url "presupuestos:otitemmuestras" otitem.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestras" alt= "Muestras"></a></td>
+		<!-- <td><a href="{ % url "presupuestos:analisis_otitem_listar" otitem.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> -->
+		<td><a href="{% url "presupuestos:analisis_otitem_listar" otitem.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td>
+		<td>{{ otitem.orden_trabajo.referencia_completa }}</td>
+		<td>{{ otitem.numero }}</td>
+		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>
+		<td>{{ otitem.orden_trabajo.descripcion }}</td>
+		<td>{{ otitem.item.matriz }}</td>
+		<td>{{ otitem.item.cantidadMuestra }}</td>
+		<td>{{ otitem.estado }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+{% endblock content %}

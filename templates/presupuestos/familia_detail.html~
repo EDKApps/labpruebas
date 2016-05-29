@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ familia }}</h1>
+
+<p>Matriz: {{ familia.nombre_familia }}</p>
+<a href="{% url "presupuestos:familia_listar"  %}">Familias</a>
+{% endblock content %}

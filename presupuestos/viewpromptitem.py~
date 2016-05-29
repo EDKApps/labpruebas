@@ -1,0 +1,70 @@
+ # -- coding: utf-8 --
+from django.forms import ModelForm
+from django import forms
+from django.forms import modelformset_factory
+from django.shortcuts import render_to_response
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.template.context_processors import csrf
+from django.views.decorators.csrf import csrf_protect
+from .models import Ot_Item, Item
+from django.db.models import Q #para OR en consultas
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+#Armo el formset
+class Item_Form(ModelForm): 
+	class Meta:
+		model = Item
+		fields= ['seleccionado']		
+								 
+def promptitems(request, idot):
+    ItemFormSet = modelformset_factory(Item, form = Item_Form, extra= 0)
+    #item = Item.objects.get(id=iditem) #item al que agregar los parámetros
+    if request.method == 'POST':
+        formset = ItemFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            
+	        
+            for form in formset: #recorro los formularios
+                if form.cleaned_data['seleccionado']: #Si el objeto está selecciondo lo agrego donde corresponde
+                    unitem = form.instance #la instancia relacionada, como figura en la BD
+                    """subitem_parametro = Subitem_parametro.objects.create(
+                        item = item,
+                        itemparametro= unparametroprecio
+                    )
+                    subitem_parametro.save()"""
+                    #todo, falta agregar la ot
+                    ot_item = Ot_Item.objects.create(item = item)
+                    ot_item.save()
+            #volver al ítem
+            #return   
+            return HttpResponseRedirect( reverse('presupuestos:ot_item_modificar', kwargs={'pk': idot,}) )
+    else:		
+        #quiero filtrar por presupuesto y otros criterios de búsqueda
+
+        querysearch = request.GET.get('q')
+        if querysearch is None:
+			querysearch = '' #si es nulo le asigno la cadena vacia
+			#todo, falta traer la ot, y el ot.presupuesto
+			#queryset=Item.objects.filter(presupuesto = item.presuesto)
+        else:
+"""            queryset=ParametroPrecio.objects.filter(Q( matriz = item.matriz, parametro__nombre_par__icontains=querysearch)| 
+                                                    Q( matriz = item.matriz, tecnica__nombre_tec__icontains=querysearch)
+"""                                                   )
+			
+        paginator = Paginator(queryset, 1) #10 formularios por página
+        page = request.GET.get('page')
+        try:
+            objects =paginator.page(page)
+        except PageNotAnInteger:
+            objects = paginator.page(1)
+        except EmptyPage:
+            objects = paginator.page(paginator.num_pages)
+        page_query = queryset.filter(id__in=[object.id for object in objects])
+        	
+        formset = ItemFormSet(queryset=page_query) 
+        #contexto = {"ItemFormSet": formset, "iditem":iditem, "querysearch":querysearch,"objects": objects}
+        contexto = {"ItemFormSet": formset, "querysearch":querysearch,"objects": objects}
+    return render_to_response("presupuestos/promptitem.html", contexto)
+	

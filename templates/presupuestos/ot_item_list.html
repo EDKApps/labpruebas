@@ -1,0 +1,74 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>OT Item</h2>
+		<form method="get" action="/presupuestos/otitem/">
+		<p>
+			<label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
+				<input type="text" name="q" id="id_q" value="{{ query }}" />
+	    </p>
+		<p>
+			<label for="id_q2">Filtro por muestreo propio:</label>
+			<select name="q2" id= "id_q2" >
+				<option value="todos" {%if query2 == "todos" %} selected {% endif %}>Todos</option>
+				<option value="si" {%if query2 == "si" %} selected {% endif %} >Si</option>
+				<option value="no" {%if query2 == "no" %} selected {% endif %} >No</option>
+			</select>
+		</p>
+		<p><input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th>OT</th>
+        <th>Item</th>
+        <th>Presupuesto</th>
+		<th>Muestreo propio</th>
+		<th>Descripcion</th>
+		<th>Matriz</th>
+		<th>Muestras de OT</th>
+		<th>Muestras del presupuesto</th>
+		<th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for otitem in ot_item_list %}
+	<tr>
+		<td>{{ otitem.orden_trabajo.referencia_completa }}</td>
+		<td>{{ otitem.numero }}</td>
+		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>
+		<td> 
+		{% if otitem.muestreo_propio %}
+			Si
+		{% else %}
+			No
+		{% endif %}
+		</td>
+		<td>{{ otitem.orden_trabajo.descripcion }}</td>
+		<td>{{ otitem.item.matriz }}</td>
+		<td>{{ otitem.cantidad }}</td>
+		<td>{{ otitem.item.cantidadMuestra }}</td>
+		<td>{{ otitem.estado }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/otitem?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/otitem?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+<a href="{% url "presupuestos:otitem_listar"  %}">OT Ítems</a>
+{% endblock content %}

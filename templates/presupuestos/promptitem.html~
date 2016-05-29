@@ -1,0 +1,57 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<h2>Lista de Item de Presupuesto</h2>
+    <form method="get" action="/presupuestos/promptitems/{{  }}/">
+    <p><label for="id_q">Filtro:</label>
+    <input type="text" name="q" id="id_q" value="{{ querysearch }}" />
+    <input type="submit" value="Buscar" /></p>
+    </form>	
+
+<form method="post" action="">
+	
+    {{ ItemFormSet.management_form }}
+	
+	<table class="table table-hover">
+	<thead>
+	  <tr>
+		<th></th>
+        	<th>Numero de Item</th>
+		<th>Descripcion</th>
+		<th>Matriz</th>
+		<th>Cantidad de muestra</th>
+	  </tr>
+	</thead>
+	<tbody>	  	
+    {% for form in ItemFormSet%}
+		  <tr>
+          	  <td>
+		  {{ form.id }}
+		  {{ form.seleccionado}}
+		  </td>
+		  <td> {{ form.instance.numero }}  </td>
+		  <td> {{ form.instance.descripcion }}</td>
+	          <td> {{ form.instance.matriz }}</td>
+		  <td> {{ form.instance.cantidadMuestra }}</td>
+		  </tr>		
+    {% endfor %}	
+	</tbody>
+	</table>																																																																																																	
+    <input type="submit" value="Confirmar" class="submit" />	
+</form>
+<div class="pagination">
+    <span class="step-links">
+        {% if objects.has_previous %}
+            <a href="?page={{ objects.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+        </span>
+
+        {% if objects.has_next %}
+            <a href="?page={{ objects.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock content %}

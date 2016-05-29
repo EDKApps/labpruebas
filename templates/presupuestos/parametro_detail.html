@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Parametro {{ parametro}} creado correctamente</h1>
+
+<p>Parametro: {{ parametro.nombre_par }}</p>
+<a href="{% url "presupuestos:parametro_listar"  %}">Parametros</a>
+{% endblock content %}

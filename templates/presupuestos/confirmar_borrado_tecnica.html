@@ -1,0 +1,5 @@
+{% extends "menu.html" %}
+{% block content %}
+<h2>{{ respuesta }}</h2> <br/>
+<a href="{% url "presupuestos:tecnica_listar"  %}">Volver a la lista de metodologias analiticas</a>
+{% endblock content %}

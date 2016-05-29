@@ -1,0 +1,75 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+	<h2>Muestras</h2>
+		<form method="get" action="/presupuestos/muestralist/">
+		<p><label for="id_q">Filtro (Id Muestra, OT número, Matriz, Estado):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>      
+          <th>referencia</th>
+          <th>estado</th>
+          <th>Orden de trabajo</th>
+          <th>responsable ingreso de muestra</th>
+          <th>fecha de ingreso</th>
+          <th>cadena de custodia</th>
+          <th>rótulo</th>
+          <th>ubicación</th>
+          <th>sitio de muestreo</th>
+          <th>muestreador</th>
+          <th>sólido - peso de muestra (gr.)</th>
+          <th>líquido - Volúmen de muestra (lt.)</th>
+          <th>aire - Caudal, (lt/min, tiempo)</th>
+          <th>Preservación - Conservación</th>
+          <th>fecha de muestreo</th>
+          <th>coordenadas de ubicación</th>
+          <th>sistema de coordenada</th>
+          <th>observación</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for muestra in muestra_list %}
+	<tr>
+            <td>{{ muestra.referencia_completa }}</td>
+            <td>{{ muestra.estado }} </td>		
+	    <td>{{ muestra.ot_item.orden_trabajo.referencia_completa }}-{{muestra.ot_item.numero}}</td>
+            <td>{{ muestra.ingreso_muestra }}</td>
+            <td>{{ muestra.fecha_ingreso }}</td>
+            <td>{{ muestra.cadena_custodia }} </td>
+            <td>{{ muestra.rotulo }}</td>
+            <td>{{ muestra.ubicacion }}</td>
+            <td>{{ muestra.sitio_muestreo }} </td>
+            <td> {{ muestra.muestreador }}</td>
+            <td>{{ muestra.peso }} </td>
+            <td>{{ muestra.volumen }} </td>
+            <td>{{ muestra.caudal }} </td>
+            <td>{{ muestra.preservacion }} </td>
+            <td>{{ muestra.fecha_muestreo }}</td>
+            <td>{{ muestra.coordenada }}</td>
+            <td>{{ muestra.sistema_coordenada }} </td>
+            <td>{{ muestra.observacion }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/muestralist?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/muestralist?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+{% endblock content %}

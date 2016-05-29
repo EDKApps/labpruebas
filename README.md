@@ -1,2 +1,2 @@
-# labpruebas
-lab pruebas 
+# labpg
+Laboratorio industrial Django Postgres

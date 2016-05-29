@@ -1,0 +1,74 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Perfil Precio</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		        
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>	
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ parametro_form.prefix }}").formset({
+                prefix: "{{ parametro_form.prefix }}",
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Agregar / Modificar Perfil Precio</h1>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Parámetros</legend>
+                {{ parametro_form.management_form }}
+                {{ parametro_form.non_form_errors }}
+                {% for form in parametro_form %}
+                    {{ form.id }}
+                    <div class="inline {{ parametro_form.prefix }}">
+						{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        {{ form.parametro.errors }}
+                        {{ form.parametro.label_tag }}
+                        {{ form.parametro }}
+                        
+                        {{ form.parametro.familia.label_tag}}
+                        {{ form.parametro.familia}}
+                        
+                        {{ form.tecnica.errors }}
+                        {{ form.tecnica.label_tag }}
+                        {{ form.tecnica }}
+                        {{ form.texto.label_tag }}
+                        {{ form.texto }}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Confirmar" class="submit" />
+        </form>
+    </div>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>    
+</body>
+</html>
+{% endblock content %}

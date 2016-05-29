@@ -1,0 +1,5 @@
+{% extends "menu.html" %}
+{% block content %}
+<h2>{{ respuesta }}</h2> <br/>
+<a href="{% url "presupuestos:unidades_listar"  %}">Volver a la lista de unidades</a>
+{% endblock content %}

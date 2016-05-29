@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Matriz {{ matriz.nombre_matriz }} creada correctamente</h1>
+
+<p>Matriz: {{ matriz.nombre_matriz }}</p>
+<a href="{% url "presupuestos:matriz_listar"  %}">Matrices</a>
+{% endblock content %}

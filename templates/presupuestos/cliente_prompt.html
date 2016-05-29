@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Laboratorio Industrial</title>
+    <head>
+        <title>Laboratorio Industrial</title>
+  		<!--<meta charset="utf-8">-->
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		                
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    </head>		
+<div class="container">
+	<h2>Selección de Cliente</h2>
+		<form method="get" action="/presupuestos/clienteprompt/">
+		<p><label for="id_q">Filtro (Contacto, Empresa o Refrencia):</label>
+		<input type="text" name="q" id="id_q" value="{{ query }}" />
+		<input type="submit" value="Buscar" /></p>
+		</form>	
+  <table class="table table-hover">
+    <thead>
+      <tr>
+		<th></th>	  
+        <th>Empresa</th>
+        <th>Contacto</th>
+        <th>Funcion</th>
+        <th>Fijo</th>
+        <th>Celular</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>	 	
+    {% for cliente in cliente_list %}
+	<tr>
+    	<td><a href="#" onclick="sendValues({{ cliente.id }});" ><img src= "{% static "images/accion_elegir.png"%}" data-toggle="tooltip" data-placement="top" title="Seleccionar" alt= "Modificar"></a></td>
+		<td>{{ cliente.empresa }}</td>
+   		<td>{{ cliente.contacto }}  </td>
+		<td>{{ cliente.funcion }}</td>
+		<td>{{ cliente.telefono_fijo }}</td>
+		<td>{{ cliente.telefono_movil }}</td>
+		<td>{{ cliente.email }}</td>
+	</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/presupuestos/clientes?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+              {% endif %}
+              <span class="page-current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/presupuestos/clientes?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}	
+</div>	
+
+<script type="text/javascript">
+ function sendValues(idcliente){
+ opener.window.document.getElementById('id_cliente').value = idcliente
+ 
+ window.close();
+ }
+</script>

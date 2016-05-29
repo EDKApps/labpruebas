@@ -1,0 +1,7 @@
+{% extends "menu.html" %}
+{% block content %}
+<h1>Precio {{ perfilprecio}} creado correctamente</h1>
+
+<p>Perfil Precio: {{ perfilprecio.grupo_parametro }}</p>
+<a href="{% url "presupuestos:perfilprecio_listar"  %}">Perfil Precio</a>
+{% endblock content %}

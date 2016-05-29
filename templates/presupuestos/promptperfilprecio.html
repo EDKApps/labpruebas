@@ -1,0 +1,76 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<h2>Lista de precios - perfiles</h2>
+    <form method="get" action="/presupuestos/promptperfiles/{{iditem}}/">
+    <p><label for="id_q">Filtro (Perfiles ):</label>
+    <input type="text" name="q" id="id_q" value="{{ querysearch }}" />
+    <input type="submit" value="Buscar" /></p>
+    </form>	
+
+<!-- paginado arriba y abajo -->
+<div class="pagination">
+    <span class="step-links">
+        {% if objects.has_previous %}
+            <a href="?page={{ objects.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+        </span>
+
+        {% if objects.has_next %}
+            <a href="?page={{ objects.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+
+<form method="post" action="">
+	
+    {{ PerfilPrecioFormSet.management_form }}
+	
+	<table class="table table-hover">
+	<thead>
+	  <tr>
+		<th></th>
+		<th>Matriz</th>
+		<th>Perfil</th>
+		<th>precio</th>
+		<th>fecha del precio</th>
+		<th>fuente del precio</th>
+	  </tr>
+	</thead>
+	<tbody>	  	
+    {% for form in PerfilPrecioFormSet%}
+		  <tr>
+          <td>
+			  {{ form.id }}
+			  {{ form.seleccionado}}
+		  </td>
+		  <td> {{ form.instance.matriz }}  </td>
+		  <td> {{ form.instance.nombre }}</td>
+		  <td> {{ form.instance.precio }}</td>
+		  <td> {{ form.instance.fecha_precio }}</td>
+		  <td> {{ form.instance.fuente_precio }}</td>
+		  </tr>		
+    {% endfor %}	
+	</tbody>
+	</table>
+    <input type="submit" value="Confirmar" class="submit" />	
+</form>
+<div class="pagination">
+    <span class="step-links">
+        {% if objects.has_previous %}
+            <a href="?page={{ objects.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+        </span>
+
+        {% if objects.has_next %}
+            <a href="?page={{ objects.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock content %}

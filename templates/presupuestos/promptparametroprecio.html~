@@ -1,0 +1,67 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<h2>Lista de precios - parámetros</h2>
+    <form method="get" action="/presupuestos/promptparametros/{{iditem}}/">
+    <p><label for="id_q">Filtro (Parametro o técnica ):</label>
+    <input type="text" name="q" id="id_q" value="{{ querysearch }}" />
+    <input type="submit" value="Buscar" /></p>
+    </form>	
+
+<form method="post" action="">{% csrf_token %}
+	
+    {{ ParametroPrecioFormSet.management_form }}
+	
+	<table class="table table-hover">
+	<thead>
+	  <tr>
+		<th></th>
+		<th>matriz</th>
+		<th>Parámetro</th>
+		<th>Grupo</th>
+        <th>Técnica</th>
+        <th>lcm</th>
+		<th>unidad</th>
+		<th>precio</th>
+		<th>fecha del precio</th>
+		<th>fuente del precio</th>
+	  </tr>
+	</thead>
+	<tbody>	  	
+    {% for form in ParametroPrecioFormSet%}
+		  <tr>
+          <td>
+			  {{ form.id }}
+			  {{ form.seleccionado}}
+		  </td>
+		  <td> {{ form.instance.matriz }}  </td>
+		  <td> {{ form.instance.parametro }}</td>
+	      <td> {{ form.instance.parametro.familia }}</td>
+		  <td> {{ form.instance.tecnica }}</td>
+		  <td> {{ form.instance.lcm }}</td>
+          <td> {{ form.instance.uni }}</td>
+		  <td> {{ form.instance.precio_parametro }}</td>
+		  <td> {{ form.instance.fecha_precio }}</td>
+		  <td> {{ form.instance.fuente_precio }}</td>
+		  </tr>		
+    {% endfor %}	
+	</tbody>
+	</table>
+    <input type="submit" value="Confirmar" class="submit" />	
+</form>
+<div class="pagination">
+    <span class="step-links">
+        {% if objects.has_previous %}
+            <a href="?page={{ objects.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+        </span>
+
+        {% if objects.has_next %}
+            <a href="?page={{ objects.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock content %}

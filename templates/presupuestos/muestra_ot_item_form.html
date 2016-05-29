@@ -1,0 +1,172 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Muestras de OT Item</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		        
+		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'js/locales/bootstrap-datepicker.es.js'%}" charset="UTF-8"></script>	
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ muestra_form.prefix }}").formset({
+                prefix: "{{ muestra_form.prefix }}",
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Ingreso de Muestras por Órden de trabajo</h1>
+        <form action="." method="post">
+
+            <div>
+                <p><strong>Item:</strong> {{ ot_item.referencia_completa }}</p>
+                <p><strong>Descripcion:</strong> {{ ot_item.descripcion }}</p>
+                <p><strong>Matriz: </strong>{{ ot_item.item.matriz }}</p>
+                <p><strong>Cantidad: </strong>{{ ot_item.cantidad }}</p>
+            </div>
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Muestras</legend>
+                {{ muestra_form.management_form }}
+                {{ muestra_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>      
+                  <th>referencia_clave</th>
+                  <th>referencia</th>
+                  <th>responsable ingreso de muestra</th>
+                  <th>fecha de ingreso</th>
+                  <th>cadena de custodia</th>
+                  <th>rótulo</th>
+                  <th>ubicación</th>
+                  <th>sitio de muestreo</th>
+                  <th>muestreador</th>
+                  <th>sólido - peso de muestra (gr.)</th>
+                  <th>líquido - Volúmen de muestra (lt.)</th>
+                  <th>aire - Caudal, (lt/min, tiempo)</th>
+                  <th>Preservación - Conservación</th>
+                  <th>fecha de muestreo</th>
+                  <th>coordenadas de ubicación</th>
+                  <th>sistema de coordenada</th>
+                  <th>observación</th>
+                  <th>estado</th>
+                  </tr>
+                </thead>
+                <tbody>                
+                {% for muestra in muestra_form %}
+                        <tr class="inline {{ muestra_form.prefix }}">
+                            <td>
+                            {{ muestra.id }}
+						{% if muestra.instance.pk %}{{ muestra.DELETE }}{% endif %}
+                        {{ muestra.referencia_clave.errors }}
+                        {{ muestra.referencia_clave }}
+                        </td>
+                        <td>
+                        {{ muestra.instance.referencia }}
+                        </td>
+                        <td>
+                        {{ muestra.ingreso_muestra.errors }}
+                        {{ muestra.ingreso_muestra }} 
+                        </td>
+                        <td>
+                        {{ muestra.fecha_ingreso.errors }}
+                        {{ muestra.fecha_ingreso }}
+                        </td>
+                        <td>
+                        {{ muestra.cadena_custodia.errors }}
+                        {{ muestra.cadena_custodia }} 
+                        </td>
+                        <td>
+                        {{ muestra.rotulo.errors }}
+                        {{ muestra.rotulo }} 
+                        </td>
+                        <td>
+                        {{ muestra.ubicacion.errors }}
+                        {{ muestra.ubicacion }} 
+                        </td>
+                        <td>
+                        {{ muestra.sitio_muestreo.errors }}
+                        {{ muestra.sitio_muestreo }} 
+                        </td>
+                        <td>
+                        {{ muestra.muestreador.errors }}
+                        {{ muestra.muestreador }} 
+                        </td>
+                        <td>
+                        {{ muestra.peso.errors }}
+                        {{ muestra.peso }} 
+                        </td>
+                        <td>
+                        {{ muestra.volumen.errors }}
+                        {{ muestra.volumen }} 
+                        </td>
+                        <td>
+                        {{ muestra.caudal.errors }}
+                        {{ muestra.caudal }} 
+                        </td>
+                        <td>
+                        {{ muestra.preservacion.errors }}
+                        {{ muestra.preservacion }} 
+                        </td>
+                        <td>
+                        {{ muestra.fecha_muestreo.errors }}
+                        {{ muestra.fecha_muestreo }} 
+                        </td>
+                        <td>
+                        {{ muestra.coordenada.errors }}
+                        {{ muestra.coordenada }} 
+                        </td>
+                        <td>
+                        {{ muestra.sistema_coordenada.errors }}
+                        {{ muestra.sistema_coordenada }} 
+                        </td>
+                        <td>
+                        {{ muestra.observacion.errors }}
+                        {{ muestra.observacion }} 
+                        </td>
+                        <td>
+                        {{ muestra.estado.errors }}
+                        {{ muestra.estado }} 
+                        </td>
+                        <td>    
+                        {{ muestra.referencia.error }}
+                        {{ muestra.referencia }}
+			Se perderán los resultados de análisis.
+                        </td>
+                        <tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            	<h4><a href="{% url "presupuestos:otitem_listar"  %}">OT Ítems</a></h4>  
+            </fieldset>
+            <input type="submit" value="Confirmar" class="submit" />
+        </form>
+    </div>
+<script>
+    $(document).ready(function(){
+       //$('.datepicker').datepicker({});
+	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
+    });
+</script>    
+</body>
+</html>
+{% endblock content %}

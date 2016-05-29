@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ tecnica}}</h1>
+
+<p>Tecnica: {{ tecnica.nombre_tecnica }}</p>
+<a href="{% url "presupuestos:tecnica_listar"  %}">Tecnicas</a>
+{% endblock content %}
